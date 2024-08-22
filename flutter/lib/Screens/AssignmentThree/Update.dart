@@ -43,6 +43,22 @@ class _UpdateRequestState extends State<UpdateRequest> {
       });
     }
   }
+  Future<void> deletetudentData() async {
+    final response = await http.delete(
+      Uri.parse('http://127.0.0.1:8000/api/students/${widget.Id}'),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const ReadRequest()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to delete student')),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,28 +79,10 @@ class _UpdateRequestState extends State<UpdateRequest> {
 
                   }, child: const Text("Update")),
                   ElevatedButton(onPressed: () {
-                    Future<void> deletetudentData() async {
-                      final response = await http.delete(
-                        Uri.parse('http://127.0.0.1:8000/api/students/${widget.Id}'),
-                      );
-                    }
-                    Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) =>const ReadRequest()));
+                    deletetudentData();
                   }, child: const Text("Delete")),
                 ],
               )
             : const Center(child: Text('Failed to load students')));
-  }
-}
-
-class DeleteRequest extends StatelessWidget {
-  const DeleteRequest({super.key, required this.Id});
-  final int Id;
-
-  
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
