@@ -35,7 +35,7 @@ class StudentController extends Controller
         $student = Student::create([
             'first_name'=>$request->FirstName,
             'last_name'=>$request->LastName,
-            'course'=>$request->Department,
+            'course'=>$request->Course,
             'year'=>$request->Year,
             'enrolled'=>$request->Enrolled
         ]);
