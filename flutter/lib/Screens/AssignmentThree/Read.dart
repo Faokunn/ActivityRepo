@@ -62,7 +62,7 @@ class _ReadRequestState extends State<ReadRequest> {
                           lastName: student.lastName,
                           enrolled: student.enrolled,
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>

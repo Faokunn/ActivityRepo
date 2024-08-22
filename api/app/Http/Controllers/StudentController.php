@@ -21,7 +21,7 @@ class StudentController extends Controller
             'FirstName' => 'required|string|max:15',
             'LastName' => 'required|string|max:15',
             'Course' => 'required|string|max:10',
-            'Year' => 'required|integer|between:1,4',
+            'Year' => 'required|string|max:20',
             'Enrolled' => 'required|boolean'
         ]);
 
@@ -61,7 +61,7 @@ class StudentController extends Controller
             'FirstName' => 'required|string|max:15',
             'LastName' => 'required|string|max:15',
             'Course' => 'required|string|max:10',
-            'Year' => 'required|integer|between:1,4',
+            'Year' => 'required|string|max:20',
             'Enrolled' => 'required|boolean'
         ]);
 

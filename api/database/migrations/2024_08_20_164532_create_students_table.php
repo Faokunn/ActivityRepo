@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('course');
-            $table->integer('year');
+            $table->string('year');
             $table->boolean('enrolled');
             $table->timestamps();
         });
