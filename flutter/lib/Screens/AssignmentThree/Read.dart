@@ -1,3 +1,4 @@
+import 'package:application/Screens/AssignmentThree/Create.dart';
 import 'package:application/Screens/AssignmentThree/update.dart';
 import 'package:application/widget/CustomCard.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _ReadRequestState extends State<ReadRequest> {
   }
 
   Future<void> fetchStudentData() async {
-    final response = await http.get(
+    final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/api/students'),
     );
 
@@ -45,30 +46,45 @@ class _ReadRequestState extends State<ReadRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Assignment Three: Read"),
-          backgroundColor: Colors.blue,
-        ),
-        body: status
-            ? studentsCollection.isEmpty
-                ? const Center(child: Text('No Students Availbale'))
-                : ListView.builder(
-                    itemCount: studentsCollection.length,
-                    itemBuilder: (context, index) {
-                      final student = studentsCollection[index];
-                      return Customcard(
-                          id: student.id,
-                          firstName: student.firstName,
-                          lastName: student.lastName,
-                          enrolled: student.enrolled,
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateRequest(Id: student.id)));
-                          });
-                    })
-            : const Center(child: Text('Failed to load students')));
+      appBar: AppBar(
+        title: const Text("Assignment Three: Read"),
+        backgroundColor: Colors.blue,
+      ),
+      body: status
+          ? studentsCollection.isEmpty
+              ? const Center(child: Text('No Students Available'))
+              : ListView.builder(
+                  itemCount: studentsCollection.length,
+                  itemBuilder: (context, index) {
+                    final student = studentsCollection[index];
+                    return Customcard(
+                        id: student.id,
+                        firstName: student.firstName,
+                        lastName: student.lastName,
+                        enrolled: student.enrolled,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdateRequest(Id: student.id)));
+                        });
+                  })
+          : const Center(child: Text('Failed to load students')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateRequest(), 
+            ),
+          ).then((_) {
+            fetchStudentData();
+          });
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      ),
+    );
   }
 }
