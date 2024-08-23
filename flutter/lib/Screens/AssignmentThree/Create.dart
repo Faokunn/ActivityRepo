@@ -26,7 +26,8 @@ class _CreateRequestState extends State<CreateRequest> {
 
   Future<void> postStudentData() async {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/api/students'),
+      //Uri.parse('http://10.0.2.2:8000/api/students'),
+      Uri.parse('http://localhost:8000/api/students'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
