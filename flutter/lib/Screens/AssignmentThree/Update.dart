@@ -1,3 +1,4 @@
+import 'package:application/Screens/AssignmentThree/Edit.dart';
 import 'package:application/Screens/AssignmentThree/Read.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -43,13 +44,15 @@ class _UpdateRequestState extends State<UpdateRequest> {
       });
     }
   }
+
   Future<void> deletetudentData() async {
     final response = await http.delete(
       Uri.parse('http://127.0.0.1:8000/api/students/${widget.Id}'),
     );
 
     if (response.statusCode == 200) {
-      Navigator.pushReplacement(context,
+      Navigator.pushReplacement(
+        context,
         MaterialPageRoute(builder: (context) => const ReadRequest()),
       );
     } else {
@@ -58,7 +61,6 @@ class _UpdateRequestState extends State<UpdateRequest> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +77,20 @@ class _UpdateRequestState extends State<UpdateRequest> {
                   Text("Course: ${student!.course}"),
                   Text("Year: ${student!.year}"),
                   Text("Enrolled: ${student!.enrolled.toString()}"),
-                  ElevatedButton(onPressed: () {
-
-                  }, child: const Text("Update")),
-                  ElevatedButton(onPressed: () {
-                    deletetudentData();
-                  }, child: const Text("Delete")),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditRequest(id: student!.id)));
+                      },
+                      child: const Text("Update")),
+                  ElevatedButton(
+                      onPressed: () {
+                        deletetudentData();
+                      },
+                      child: const Text("Delete")),
                 ],
               )
             : const Center(child: Text('Failed to load students')));

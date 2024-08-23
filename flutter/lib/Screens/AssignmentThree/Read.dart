@@ -23,7 +23,7 @@ class _ReadRequestState extends State<ReadRequest> {
   }
 
   Future<void> fetchStudentData() async {
-    final response = await http.post(
+    final response = await http.get(
       Uri.parse('http://127.0.0.1:8000/api/students'),
     );
 
@@ -63,7 +63,7 @@ class _ReadRequestState extends State<ReadRequest> {
                         lastName: student.lastName,
                         enrolled: student.enrolled,
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
@@ -76,11 +76,9 @@ class _ReadRequestState extends State<ReadRequest> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateRequest(), 
+              builder: (context) => const CreateRequest(),
             ),
-          ).then((_) {
-            fetchStudentData();
-          });
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.blue,

@@ -1,3 +1,4 @@
+import 'package:application/Screens/AssignmentThree/Read.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,6 @@ class _CreateRequestState extends State<CreateRequest> {
     'Second Year',
     'Third Year',
     'Fourth Year',
-    'Fifth Year',
   ];
 
   Future<void> postStudentData() async {
@@ -31,19 +31,20 @@ class _CreateRequestState extends State<CreateRequest> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'first_name': firstName,
-        'last_name': lastName,
-        'course': course,
-        'year': year,
-        'enrolled': enrolled,
+        'FirstName': firstName,
+        'LastName': lastName,
+        'Course': course,
+        'Year': year,
+        'Enrolled': enrolled,
       }),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Student added successfully')),
       );
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => ReadRequest()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to add student')),

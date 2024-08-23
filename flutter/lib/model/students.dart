@@ -3,7 +3,7 @@ class Students {
   final String firstName;
   final String lastName;
   final String course;
-  final int year;
+  final String year;
   final bool enrolled;
 
   Students({
@@ -15,14 +15,13 @@ class Students {
     required this.enrolled,
   });
 
-  factory Students.fromJson(Map<String, dynamic> json){
+  factory Students.fromJson(Map<String, dynamic> json) {
     return Students(
-      id: json['id'], 
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      course: json['course'],
-      year: json['year'],
-      enrolled: json['enrolled']
-    );
+        id: json['id'],
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        course: json['course'],
+        year: json['year'],
+        enrolled: json['enrolled']);
   }
 }

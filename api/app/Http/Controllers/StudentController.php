@@ -69,7 +69,12 @@ class StudentController extends Controller
         if (!$student) {
             return response()->json(['error' => 'Student not found'], 404);
         }
-
+        $student->first_name = $validator['FirstName'];
+        $student->last_name = $validator['LastName'];
+        $student->course = $validator['Course'];
+        $student->year = $validator['Year'];
+        $student->enrolled = $validator['Enrolled'];
+        $student->save();
         $student->update($validator);
 
         return response()->json([
