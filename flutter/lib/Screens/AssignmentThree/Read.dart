@@ -35,49 +35,42 @@ class _ReadRequestState extends State<ReadRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Assignment Three: Read"),
-        backgroundColor: Colors.blue,
-      ),
-      body: BlocProvider(create: (context) => apiBloc,
-        child: Column(
-          children: [
-            BlocBuilder<ApiBloc,ApiState>(
-              builder: (context, state) {
-               if (state is studentLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                else if(state is StudentLoaded){
-                  return ListView.builder(
-                  itemCount: state.students.length,
-                  itemBuilder: (context, index) {
-                    final student = state.students[index];
-                    return Customcard(
-                        id: student.id,
-                        firstName: student.firstName,
-                        lastName: student.lastName,
-                        enrolled: student.enrolled,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateRequest(Id: student.id)));
-                        });
-                  });
-                }
-                else if (state is StudentError) {
-                  return Center(child: Text(state.error));
-                }
-                else {
-                  return const Center(child: Text('No students available'));
-                }
-              },
-            )
-          ],
+        appBar: AppBar(
+          title: const Text("Assignment Three: Read"),
+          backgroundColor: Colors.blue,
         ),
-      )
-    );
+        body: BlocProvider(
+          create: (context) => apiBloc,
+          child: BlocBuilder<ApiBloc, ApiState>(
+            builder: (context, state) {
+              if (state is studentLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is StudentLoaded) {
+                return ListView.builder(
+                    itemCount: state.students.length,
+                    itemBuilder: (context, index) {
+                      final student = state.students[index];
+                      return Customcard(
+                          id: student.id,
+                          firstName: student.firstName,
+                          lastName: student.lastName,
+                          enrolled: student.enrolled,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateRequest(Id: student.id)));
+                          });
+                    });
+              } else if (state is StudentError) {
+                return Center(child: Text(state.error));
+              } else {
+                return const Center(child: Text('No students available'));
+              }
+            },
+          ),
+        ));
   }
 }
 
