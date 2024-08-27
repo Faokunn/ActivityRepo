@@ -65,12 +65,12 @@ class _UpdateRequestState extends State<UpdateRequest> {
                       },
                       child: const Text("Update")),
                   ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<ApiBloc>(context).add(studentDelete(state.student.id));
-                        Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (context) => ReadRequest()));
-                      },
-                      child: const Text("Delete")),
+                    onPressed: () {
+                      BlocProvider.of<ApiBloc>(context).add(studentDelete(state.student.id));
+                      Navigator.pop(context, true);
+                    },
+                    child: const Text("Delete"),
+                  ),
                 ],
               );
             }
