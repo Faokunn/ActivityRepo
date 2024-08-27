@@ -12,6 +12,10 @@ class studentPost extends ApiEvent {}
 
 class studentPut extends ApiEvent {}
 
-class studentShow extends ApiEvent {}
+class studentShow extends ApiEvent {
+  final int id;
+
+  studentShow(this.id);
+}
 
 class studentDelete extends ApiEvent {}
