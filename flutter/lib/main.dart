@@ -17,14 +17,14 @@ class MyApp extends StatelessWidget {
       routes: {
         '/assignmentOne': (context) => const AssignmentOne(),
         '/assignmentTwo': (context) => const Assignmenttwo(),
-        '/assignmentThree': (context) => const ReadRequest(),
+        '/assignmentThree': (context) => ReadRequest(),
       },
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ReadRequest(),
+      home: ReadRequest(),
     );
   }
 }
