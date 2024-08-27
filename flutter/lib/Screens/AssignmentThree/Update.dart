@@ -67,6 +67,8 @@ class _UpdateRequestState extends State<UpdateRequest> {
                   ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<ApiBloc>(context).add(studentDelete(state.student.id));
+                        Navigator.pushReplacement(
+                          context, MaterialPageRoute(builder: (context) => ReadRequest()));
                       },
                       child: const Text("Delete")),
                 ],
@@ -74,6 +76,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
             }
             else if (state is StudentError) {
               return Center(child: Text(state.error));
+              
             }
             else{
               return const Center(child: Text('No students available'));
