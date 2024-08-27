@@ -20,14 +20,14 @@ class _ReadRequestState extends State<ReadRequest> {
   late ApiBloc apiBloc;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     apiBloc = ApiBloc();
     apiBloc.add(studentGet());
   }
 
   @override
-  void dispose(){
+  void dispose() {
     apiBloc.close();
     super.dispose();
   }
@@ -40,37 +40,41 @@ class _ReadRequestState extends State<ReadRequest> {
         backgroundColor: Colors.blue,
       ),
       body: BlocProvider(create: (context) => apiBloc,
-        child: BlocBuilder<ApiBloc,ApiState>(
-          builder: (context, state) {
-           if (state is studentLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            else if(state is StudentLoaded){
-              return ListView.builder(
-              itemCount: state.students.length,
-              itemBuilder: (context, index) {
-                final student = state.students[index];
-                return Customcard(
-                    id: student.id,
-                    firstName: student.firstName,
-                    lastName: student.lastName,
-                    enrolled: student.enrolled,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  UpdateRequest(Id: student.id)));
-                    });
-              });
-            }
-            else if (state is StudentError) {
-              return Center(child: Text(state.error));
-            }
-            else {
-              return const Center(child: Text('No students available'));
-            }
-          },
+        child: Column(
+          children: [
+            BlocBuilder<ApiBloc,ApiState>(
+              builder: (context, state) {
+               if (state is studentLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                else if(state is StudentLoaded){
+                  return ListView.builder(
+                  itemCount: state.students.length,
+                  itemBuilder: (context, index) {
+                    final student = state.students[index];
+                    return Customcard(
+                        id: student.id,
+                        firstName: student.firstName,
+                        lastName: student.lastName,
+                        enrolled: student.enrolled,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdateRequest(Id: student.id)));
+                        });
+                  });
+                }
+                else if (state is StudentError) {
+                  return Center(child: Text(state.error));
+                }
+                else {
+                  return const Center(child: Text('No students available'));
+                }
+              },
+            )
+          ],
         ),
       )
     );
