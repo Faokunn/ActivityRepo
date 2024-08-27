@@ -57,17 +57,11 @@ class _ReadRequestState extends State<ReadRequest> {
                           enrolled: student.enrolled,
                           onPressed: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpdateRequest(Id: student.id),
-                              ),
-                            ).then((shouldRefresh) {
-                              if (shouldRefresh == true) {
-                                apiBloc.add(studentGet());
-                              }
-                            });
-                          },
-                          );
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateRequest(Id: student.id)));
+                          });
                     });
               } else if (state is StudentError) {
                 return Center(child: Text(state.error));
