@@ -1,7 +1,11 @@
 import 'package:application/Screens/AssignmentThree/Create.dart';
 import 'package:application/Screens/AssignmentThree/update.dart';
+import 'package:application/bloc/api_bloc.dart';
+import 'package:application/bloc/api_event.dart';
+import 'package:application/bloc/api_state.dart';
 import 'package:application/widget/CustomCard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:application/model/students.dart';
@@ -13,35 +17,19 @@ class ReadRequest extends StatefulWidget {
 }
 
 class _ReadRequestState extends State<ReadRequest> {
-  List<Students> studentsCollection = [];
-  bool status = false;
+  late ApiBloc apiBloc;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    fetchStudentData();
+    apiBloc = ApiBloc();
+    apiBloc.add(studentGet());
   }
 
-  Future<void> fetchStudentData() async {
-    final response = await http.get(
-      Uri.parse('http://10.0.2.2:8000/api/students'),
-      //Uri.parse('http://localhost:8000/api/students'),
-    );
-
-    if (response.statusCode == 200) {
-      List<dynamic> studentsJson = json.decode(response.body)['students'];
-      List<Students> students =
-          studentsJson.map((json) => Students.fromJson(json)).toList();
-
-      setState(() {
-        studentsCollection = students;
-        status = true;
-      });
-    } else {
-      setState(() {
-        status = false;
-      });
-    }
+  @override
+  void dispose(){
+    apiBloc.close();
+    super.dispose();
   }
 
   @override
@@ -51,7 +39,49 @@ class _ReadRequestState extends State<ReadRequest> {
         title: const Text("Assignment Three: Read"),
         backgroundColor: Colors.blue,
       ),
-      body: status
+      body: BlocProvider(create: (context) => apiBloc,
+        child: Column(
+          children: [
+            BlocBuilder<ApiBloc,ApiState>(
+              builder: (context, state) {
+               if (state is studentLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                else if(state is StudentLoaded){
+                  return ListView.builder(
+                  itemCount: state.students.length,
+                  itemBuilder: (context, index) {
+                    final student = state.students[index];
+                    return Customcard(
+                        id: student.id,
+                        firstName: student.firstName,
+                        lastName: student.lastName,
+                        enrolled: student.enrolled,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdateRequest(Id: student.id)));
+                        });
+                  });
+                }
+                else if (state is StudentError) {
+                  return Center(child: Text(state.error));
+                }
+                else {
+                  return const Center(child: Text('No students available'));
+                }
+              },
+            )
+          ],
+        ),
+      )
+    );
+  }
+}
+
+/** status
           ? studentsCollection.isEmpty
               ? const Center(child: Text('No Students Available'))
               : ListView.builder(
@@ -83,7 +113,4 @@ class _ReadRequestState extends State<ReadRequest> {
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.blue,
-      ),
-    );
-  }
-}
+      ),*/
