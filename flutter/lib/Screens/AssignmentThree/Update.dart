@@ -66,7 +66,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
                       child: const Text("Update")),
                   ElevatedButton(
                       onPressed: () {
-                        ;
+                        BlocProvider.of<ApiBloc>(context).add(studentDelete(state.student.id));
                       },
                       child: const Text("Delete")),
                 ],

@@ -11,6 +11,8 @@ class studentEmpty extends ApiState {}
 
 class studentLoading extends ApiState {}
 
+class studentDeleteSuccess extends ApiState {}
+
 class specificstudentLoading extends ApiState {
   final int id;
 

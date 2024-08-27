@@ -18,4 +18,8 @@ class studentShow extends ApiEvent {
   studentShow(this.id);
 }
 
-class studentDelete extends ApiEvent {}
+class studentDelete extends ApiEvent {
+  final int id;
+
+  studentDelete(this.id);
+}

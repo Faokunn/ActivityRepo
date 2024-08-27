@@ -10,6 +10,7 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
   ApiBloc() : super(studentEmpty()) {
     on<studentGet>(fetchStudentData);
     on<studentShow>(showStudentData);
+    on<studentDelete>(deleteStudentData);
   }
 
   Future<void> showStudentData(
@@ -32,6 +33,26 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
       }
     } catch (e) {
       emit(StudentError(e.toString()));
+    }
+  }
+
+  Future<void> deleteStudentData(
+      studentDelete event, Emitter<ApiState> emit) async {
+    emit(specificstudentLoading(event.id));
+
+    try {
+      final response = await http.delete(
+        Uri.parse('http://127.0.0.1:8000/api/students/${event.id}'),
+        //Uri.parse('http://localhost:8000/api/students/${widget.Id}'),
+      );
+
+      if (response.statusCode == 200) {
+        emit(studentDeleteSuccess());
+      } else {
+        emit(StudentError('Failed to delete student with ID: ${event.id}'));
+      }
+    } catch (e) {
+      emit(StudentError('Error deleting student: ${e.toString()}'));
     }
   }
 
