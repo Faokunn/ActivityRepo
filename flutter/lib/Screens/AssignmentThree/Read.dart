@@ -40,6 +40,14 @@ class _ReadRequestState extends State<ReadRequest> {
           backgroundColor: Colors.blue,
         ),
         body: BlocProvider(
+        create: (context) => apiBloc,
+        child: BlocListener<ApiBloc, ApiState>(
+          listener: (context, state) {
+            if (state is studentDeleteSuccess) {
+              apiBloc.add(studentGet());
+            }
+          },
+          child: BlocProvider(
           create: (context) => apiBloc,
           child: BlocBuilder<ApiBloc, ApiState>(
             builder: (context, state) {
@@ -70,8 +78,9 @@ class _ReadRequestState extends State<ReadRequest> {
               }
             },
           ),
-        ));
-  }
+        ))
+        
+  ));}
 }
 
 /** status
