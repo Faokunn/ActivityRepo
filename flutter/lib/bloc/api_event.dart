@@ -8,7 +8,15 @@ abstract class ApiEvent extends Equatable {
 
 class studentGet extends ApiEvent {}
 
-class studentPost extends ApiEvent {}
+class studentPost extends ApiEvent {
+  final String firstName;
+  final String lastName;
+  final String course;
+  final String year;
+  final bool enrolled;
+
+  studentPost(this.firstName, this.lastName, this.course, this.year, this.enrolled);
+}
 
 class studentPut extends ApiEvent {}
 

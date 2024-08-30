@@ -9,6 +9,18 @@ abstract class ApiState extends Equatable {
 
 class studentEmpty extends ApiState {}
 
+class studentCreating extends ApiState {
+  final String firstName;
+  final String lastName;
+  final String course;
+  final String year;
+  final bool enrolled;
+
+  studentCreating(this.firstName, this.lastName, this.course, this.year, this.enrolled);
+}
+
+class studentCreated extends ApiState {}
+
 class studentLoading extends ApiState {}
 
 class studentDeleteSuccess extends ApiState {}

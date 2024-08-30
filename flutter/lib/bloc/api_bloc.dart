@@ -4,13 +4,13 @@ import 'package:application/bloc/api_event.dart';
 import 'package:application/bloc/api_state.dart';
 import 'package:application/model/students.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 class ApiBloc extends Bloc<ApiEvent, ApiState> {
   ApiBloc() : super(studentEmpty()) {
     on<studentGet>(fetchStudentData);
     on<studentShow>(showStudentData);
     on<studentDelete>(deleteStudentData);
+    on<studentPost>(postStudentData);
   }
 
   Future<void> showStudentData(
@@ -70,7 +70,7 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
         List<dynamic> studentsJson = json.decode(response.body)['students'];
         List<Students> students =
             studentsJson.map((json) => Students.fromJson(json)).toList();
-        emit(StudentLoaded(students)); // Notebook remembers students (loaded).
+        emit(StudentLoaded(students));
       } else {
         emit(StudentError('Failed to load students'));
       }
@@ -78,4 +78,37 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
       emit(StudentError(e.toString()));
     }
   }
+
+  Future<void> postStudentData(
+    studentPost event, Emitter<ApiState> emit) async {
+      emit(studentCreating(event.firstName, event.lastName, event.course, event.year, event.enrolled));
+
+    try{
+
+      final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/students'),
+      //Uri.parse('http://10.0.2.2:8000/api/students'),
+      //Uri.parse('http://localhost:8000/api/students'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'FirstName': event.firstName,
+        'LastName': event.lastName,
+        'Course': event.course,
+        'Year': event.year,
+        'Enrolled': event.enrolled,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      emit(studentCreated());
+    } else {
+      emit(StudentError('Failed to add student'));
+    }
+    }
+    catch(e){
+      emit(StudentError(e.toString()));
+    }
+  }  
 }
